@@ -1,19 +1,18 @@
 import React from 'react';
-import style from './Filter.module.css';
 import PropTypes from 'prop-types';
+import {
+  StyledFilter,
+  StyledLabelFilter,
+  StyledFilterInput,
+} from './StyledFilter';
 
 const Filter = ({ value, onChange }) => (
-  <div className={style.filter}>
-    <label className={style.labelFilter}>
+  <StyledFilter>
+    <StyledLabelFilter>
       Filter
-      <input
-        type="name"
-        value={value}
-        onChange={onChange}
-        className={style.filterInput}
-      />
-    </label>
-  </div>
+      <StyledFilterInput type="name" value={value} onChange={onChange} />
+    </StyledLabelFilter>
+  </StyledFilter>
 );
 
 Filter.propTypes = {

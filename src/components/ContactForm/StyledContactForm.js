@@ -1,4 +1,6 @@
-.form {
+import styled from 'styled-components';
+
+export const StyledForm = styled.form`
   background-color: white;
   display: flex;
   width: 300px;
@@ -9,21 +11,22 @@
   border-radius: 10px;
   box-shadow: 1rem 1rem 1rem rgb(65, 64, 64, 0.5),
     -1rem -1rem 1rem rgb(82, 81, 81, 0.5);
-}
+`;
 
-label {
+export const StyledLabel = styled.label`
   margin-bottom: 10px;
   color: black;
   font-size: 15px;
-}
 
-label:last-child {
-  margin-bottom: 0px;
-}
+  &:last-child {
+    margin-bottom: 0px;
+  }
+`;
 
-.inputName {
+export const StyledInputName = styled.input`
   margin-left: 25px;
-}
-.inputNumber {
+`;
+
+export const StyledInputNumber = styled.input`
   margin-left: 10px;
-}
+`;

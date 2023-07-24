@@ -1,58 +1,49 @@
-import React, { useState } from 'react';
-import style from './ContactForm.module.css';
+import useForm from '../hooks/useForm';
+import {
+  StyledForm,
+  StyledLabel,
+  StyledInputName,
+  StyledInputNumber,
+} from './StyledContactForm';
 
 const ContactForm = ({ onSubmit }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-
-  const handleChange = setter => e => {
-    setter(e.target.value);
-  };
+  const [values, handleChange, resetForm] = useForm({ name: '', number: '' });
 
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit({ name, number });
+    onSubmit(values);
     resetForm();
   };
 
-  const resetForm = () => {
-    setName('');
-    setNumber('');
-  };
-
   return (
-    <form className={style.form} onSubmit={handleSubmit}>
-      <label>
+    <StyledForm onSubmit={handleSubmit}>
+      <StyledLabel>
         Name
-        <input
-          className={style.inputName}
-          value={name}
-          onChange={handleChange(setName)}
+        <StyledInputName
+          value={values.name}
+          onChange={handleChange}
           type="text"
           name="name"
           pattern="^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+(\s[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
         />
-      </label>
-      <label>
+      </StyledLabel>
+      <StyledLabel>
         Number
-        <input
-          className={style.inputNumber}
-          value={number}
-          onChange={handleChange(setNumber)}
+        <StyledInputNumber
+          value={values.number}
+          onChange={handleChange}
           type="tel"
           name="number"
           pattern="(\+48)?\s?(\d{3}-\d{3}-\d{3}|\d{3}\s\d{3}\s\d{3}|\d{9,11})"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
         />
-      </label>
+      </StyledLabel>
 
-      <button type="submit" className={style.buttonEditor}>
-        Add contact
-      </button>
-    </form>
+      <button type="submit">Add contact</button>
+    </StyledForm>
   );
 };
 

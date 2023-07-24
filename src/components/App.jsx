@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
-import style from './App.module.css';
 import ContactList from './ContactList/index';
 import ContactForm from './ContactForm/index';
 import Filter from './Filter/index';
+import { StyledAllContacts, StyledTitleContacts } from './StyledApp';
 
 const App = () => {
   const [contacts, setContacts] = useState(() => {
-    const storedContacts = localStorage.getItem('contacts');
-    return storedContacts ? JSON.parse(storedContacts) : [];
+    try {
+      const storedContacts = localStorage.getItem('contacts');
+      return storedContacts ? JSON.parse(storedContacts) : [];
+    } catch (error) {
+      console.error('Failed to retrieve contacts:', error);
+      return [];
+    }
   });
   const [filter, setFilter] = useState('');
 
@@ -80,8 +85,8 @@ const App = () => {
       <h1>Phonebook</h1>
       <ContactForm onSubmit={addContact} />
 
-      <h2 className={style.titleContacts}>Contacts</h2>
-      <div className={style.allContacts}>All contacts: {contacts.length}</div>
+      <StyledTitleContacts>Contacts</StyledTitleContacts>
+      <StyledAllContacts>All contacts: {contacts.length}</StyledAllContacts>
       <Filter value={filter} onChange={changeFilter} />
       {visibleContacts.length > 0 ? (
         <ContactList
