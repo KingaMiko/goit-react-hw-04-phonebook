@@ -4,27 +4,17 @@ import ContactList from './ContactList/index';
 import ContactForm from './ContactForm/index';
 import Filter from './Filter/index';
 import { StyledAllContacts, StyledTitleContacts } from './StyledApp';
+import { useContacs } from './hooks/useConacts';
 
 const App = () => {
-  const [contacts, setContacts] = useState(() => {
-    try {
-      const storedContacts = localStorage.getItem('contacts');
-      return storedContacts ? JSON.parse(storedContacts) : [];
-    } catch (error) {
-      console.error('Failed to retrieve contacts:', error);
-      return [];
-    }
-  });
+  const [contacts, setContacts] = useContacs();
   const [filter, setFilter] = useState('');
 
+  const isContactAdded = name =>
+    contacts.some(contact => contact.name.toLowerCase() === name.toLowerCase());
+
   const addContact = ({ name, number }) => {
-    const normalizedName = name.toLowerCase();
-
-    const isAdded = contacts.some(
-      el => el.name.toLowerCase() === normalizedName
-    );
-
-    if (isAdded) {
+    if (isContactAdded(name)) {
       alert(`${name} is already in contacts`);
       return;
     }
@@ -41,30 +31,18 @@ const App = () => {
     setFilter(e.currentTarget.value);
   };
 
+  const deleteContact = contactId => {
+    setContacts(prevContacts =>
+      prevContacts.filter(contact => contact.id !== contactId)
+    );
+  };
+
   const getVisibleContacts = () => {
     const normalizedFilter = filter.toLowerCase();
-
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
     );
   };
-
-  const deleteContact = todoId => {
-    setContacts(prevContacts =>
-      prevContacts.filter(contact => contact.id !== todoId)
-    );
-  };
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
-
-  useEffect(() => {
-    const storedContacts = localStorage.getItem('contacts');
-    if (storedContacts) {
-      setContacts(JSON.parse(storedContacts));
-    }
-  }, []);
 
   const visibleContacts = getVisibleContacts();
 
